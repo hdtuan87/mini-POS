@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Mini POS</string>
+    <string name="tinh_tien">Tinh Tien</string>
+    <string name="them_mat_hang">Them Hang</string>
+</resources>
