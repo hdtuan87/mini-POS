@@ -7,8 +7,11 @@ import com.tuanhd.minipos.R
 import com.tuanhd.minipos.database.Item
 
 class AdapterItem : RecyclerView.Adapter<ItemViewHolder>() {
-    private lateinit var items: ArrayList<Item>
+    private var items: ArrayList<Item> = ArrayList()
 
+    fun addAll(data: ArrayList<Item>) {
+        items = data
+    }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, position: Int): ItemViewHolder {
         val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.layout_item, viewGroup, false)

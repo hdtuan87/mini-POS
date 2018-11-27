@@ -1,7 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+    <android.support.v7.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:id="@+id/imvThumb"
+            android:src="@android:drawable/btn_star"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_height="wrap_content"/>
+
+    <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/txvName"
+            app:layout_constraintStart_toEndOf="@id/imvThumb"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            tools:text="Bim Bim"
+            style="@style/Base.TextAppearance.AppCompat.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <android.support.v7.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:id="@+id/txvPrice"
+            app:layout_constraintStart_toStartOf="@id/txvName"
+            app:layout_constraintTop_toBottomOf="@id/txvName"
+            android:layout_marginTop="8dp"
+            style="@style/Base.TextAppearance.AppCompat.Headline"
+            tools:text="5.000d"
+            android:layout_height="wrap_content"/>
 
 </android.support.constraint.ConstraintLayout>
