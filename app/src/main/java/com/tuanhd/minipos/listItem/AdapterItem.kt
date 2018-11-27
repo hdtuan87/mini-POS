@@ -7,10 +7,11 @@ import com.tuanhd.minipos.R
 import com.tuanhd.minipos.database.Item
 
 class AdapterItem : RecyclerView.Adapter<ItemViewHolder>() {
-    private var items: ArrayList<Item> = ArrayList()
+    private var items: List<Item> = ArrayList()
 
-    fun addAll(data: ArrayList<Item>) {
+    fun addAll(data: List<Item>) {
         items = data
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, position: Int): ItemViewHolder {
