@@ -10,7 +10,6 @@ import com.tuanhd.minipos.database.POSDatabase
 import kotlinx.coroutines.experimental.Job
 
 class ItemViewModel(application: Application): AndroidViewModel(application){
-    private var parentJob = Job()
 
     private val repository: ItemRepository
 
@@ -20,9 +19,5 @@ class ItemViewModel(application: Application): AndroidViewModel(application){
         val itemDao = POSDatabase.getDatabase(application).itemDao()
         repository = ItemRepository(itemDao)
         allItem = repository.allItem
-    }
-
-    fun insert(item: Item) = {
-        repository.insert(item)
     }
 }

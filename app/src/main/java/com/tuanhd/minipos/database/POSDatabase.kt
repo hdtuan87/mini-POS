@@ -17,7 +17,7 @@ abstract class POSDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: POSDatabase? = null
 
-        fun getDatabase(context: Context, scope: CoroutineScope): POSDatabase {
+        fun getDatabase(context: Context): POSDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
@@ -25,7 +25,6 @@ abstract class POSDatabase : RoomDatabase() {
                     "pos_database"
                 )
                     .fallbackToDestructiveMigration()
-                    .addCallback(CoroutineScope(scope))
                     .build()
 
                 INSTANCE = instance
