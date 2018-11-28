@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
 import com.tuanhd.minipos.ActivityAddItem
 import com.tuanhd.minipos.R
 import com.tuanhd.minipos.database.Item
@@ -22,13 +23,15 @@ class ActivityListItem : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_item)
 
-        val adapter = AdapterItem()
+        val adapter = AdapterItem(this)
         itemViewModel = ViewModelProviders.of(this).get(ItemViewModel::class.java)
-        itemViewModel.allItem.observe(this, Observer {data ->
+        itemViewModel.allItems.observe(this, Observer {data ->
             data?.let { adapter.addAll(it) }
         })
 
-        listItem.adapter = AdapterItem()
+        listItem.layoutManager = LinearLayoutManager(this)
+        listItem.adapter = adapter
+
 
         btnAddItem.setOnClickListener { startActivityAddItem() }
     }

@@ -15,7 +15,6 @@ class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val price = itemView.findViewById<TextView>(R.id.txvPrice)
 
     fun bindItem(item: Item) {
-        Glide.with(itemView.context).load("path image").into(thumb)
         name.text = item.name
         price.text = item.price.toString()
     }

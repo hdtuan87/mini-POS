@@ -1,13 +1,16 @@
 package com.tuanhd.minipos.listItem
 
+import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.tuanhd.minipos.R
 import com.tuanhd.minipos.database.Item
 
-class AdapterItem : RecyclerView.Adapter<ItemViewHolder>() {
-    private var items: List<Item> = ArrayList()
+class AdapterItem internal constructor(context: Context): RecyclerView.Adapter<ItemViewHolder>() {
+
+    private val inflater = LayoutInflater.from(context)
+    private var items = emptyList<Item>()
 
     fun addAll(data: List<Item>) {
         items = data
@@ -15,13 +18,11 @@ class AdapterItem : RecyclerView.Adapter<ItemViewHolder>() {
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, position: Int): ItemViewHolder {
-        val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.layout_item, viewGroup, false)
+        val view = inflater.inflate(R.layout.layout_item, viewGroup, false)
         return ItemViewHolder(view)
     }
 
-    override fun getItemCount(): Int {
-        return items.size
-    }
+    override fun getItemCount() = items.size
 
     override fun onBindViewHolder(viewHolder: ItemViewHolder, position: Int) {
         val item = items[position]

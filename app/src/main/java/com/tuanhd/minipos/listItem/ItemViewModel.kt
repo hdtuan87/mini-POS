@@ -20,12 +20,12 @@ class ItemViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository: ItemRepository
 
-    val allItem: LiveData<List<Item>>
+    val allItems: LiveData<List<Item>>
 
     init {
-        val itemDao = POSDatabase.getDatabase(application).itemDao()
+        val itemDao = POSDatabase.getDatabase(application, scope).itemDao()
         repository = ItemRepository(itemDao)
-        allItem = repository.allItem
+        allItems = repository.allItem
     }
 
     fun insert(item: Item) = scope.launch(Dispatchers.IO) {
