@@ -11,8 +11,10 @@ import java.util.*
 class ActivityAddItem : AppCompatActivity() {
 
     companion object {
-        const val extraItem = "extra_item"
+        const val EXTRA_ITEM = "extra_item"
     }
+
+    private var thumb = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,10 +27,10 @@ class ActivityAddItem : AppCompatActivity() {
         val code = UUID.randomUUID().toString()
         val name = edtName.text.toString().trim()
         val price = edtPrice.text.toString().toDouble()
-        val item = Item(code, name, price)
+        val item = Item(code, name, thumb, price)
 
         val intent = Intent()
-        intent.putExtra(extraItem, item)
+        intent.putExtra(EXTRA_ITEM, item)
         setResult(Activity.RESULT_OK, intent)
         finish()
     }

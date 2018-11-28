@@ -44,7 +44,7 @@ class ActivityListItem : AppCompatActivity() {
 
         if (requestCode == addItemRequestCode) {
             data?.let {
-                val item = it.getSerializableExtra(ActivityAddItem.extraItem) as Item
+                val item = it.getSerializableExtra(ActivityAddItem.EXTRA_ITEM) as Item
                 itemViewModel.insert(item)
             }
         }

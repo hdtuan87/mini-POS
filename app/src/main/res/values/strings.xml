@@ -5,4 +5,6 @@
     <string name="danh_sach">Danh sách hàng</string>
     <string name="input_price">Nhap Gia</string>
     <string name="input_name">Nhap ten</string>
+    <string name="edit">Edit</string>
+    <string name="save">Save</string>
 </resources>

@@ -13,6 +13,9 @@ data class Item(
     @ColumnInfo(name = "name")
     val name: String,
 
+    @ColumnInfo(name = "thumb")
+    val thumb: String,
+
     @ColumnInfo(name = "price")
     val price: Double
 
