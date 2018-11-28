@@ -28,9 +28,7 @@ abstract class POSDatabase : RoomDatabase() {
                 INSTANCE = instance
                 return instance
             }
-
         }
-
     }
 
 }

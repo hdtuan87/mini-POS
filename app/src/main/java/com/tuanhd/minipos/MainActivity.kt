@@ -7,6 +7,7 @@ import com.tuanhd.minipos.listItem.ActivityListItem
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
+    private val addItemRequestCode = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,6 +25,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showActivityAddItem() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val intent = Intent(this, ActivityAddItem::class.java)
+        startActivityForResult(intent, addItemRequestCode)
     }
 }
