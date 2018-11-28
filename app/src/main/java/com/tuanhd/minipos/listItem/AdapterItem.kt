@@ -12,17 +12,18 @@ class AdapterItem internal constructor(context: Context): RecyclerView.Adapter<I
     private val inflater = LayoutInflater.from(context)
     private var items = emptyList<Item>()
 
-    fun addAll(data: List<Item>) {
-        items = data
+    internal fun addAll(data: List<Item>) {
+        this.items = data
         notifyDataSetChanged()
     }
+
+    override fun getItemCount() = items.size
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, position: Int): ItemViewHolder {
         val view = inflater.inflate(R.layout.layout_item, viewGroup, false)
         return ItemViewHolder(view)
     }
 
-    override fun getItemCount() = items.size
 
     override fun onBindViewHolder(viewHolder: ItemViewHolder, position: Int) {
         val item = items[position]

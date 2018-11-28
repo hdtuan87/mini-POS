@@ -13,9 +13,7 @@ import com.tuanhd.minipos.database.Item
 import kotlinx.android.synthetic.main.activity_list_item.*
 
 class ActivityListItem : AppCompatActivity() {
-    companion object {
-        const val addItemRequestCode = 1
-    }
+    private val addItemRequestCode = 1
 
     private lateinit var itemViewModel: ItemViewModel
 
@@ -24,14 +22,13 @@ class ActivityListItem : AppCompatActivity() {
         setContentView(R.layout.activity_list_item)
 
         val adapter = AdapterItem(this)
-        itemViewModel = ViewModelProviders.of(this).get(ItemViewModel::class.java)
-        itemViewModel.allItems.observe(this, Observer {data ->
-            data?.let { adapter.addAll(it) }
-        })
-
         listItem.layoutManager = LinearLayoutManager(this)
         listItem.adapter = adapter
 
+        itemViewModel = ViewModelProviders.of(this).get(ItemViewModel::class.java)
+        itemViewModel.allItems.observe(this, Observer { data ->
+            data?.let { adapter.addAll(it) }
+        })
 
         btnAddItem.setOnClickListener { startActivityAddItem() }
     }
@@ -45,7 +42,7 @@ class ActivityListItem : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_CANCELED) return
 
-        if (requestCode == addItemRequestCode){
+        if (requestCode == addItemRequestCode) {
             data?.let {
                 val item = it.getSerializableExtra(ActivityAddItem.extraItem) as Item
                 itemViewModel.insert(item)

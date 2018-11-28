@@ -23,7 +23,7 @@ class ItemViewModel(application: Application) : AndroidViewModel(application) {
     val allItems: LiveData<List<Item>>
 
     init {
-        val itemDao = POSDatabase.getDatabase(application, scope).itemDao()
+        val itemDao = POSDatabase.getDatabase(application).itemDao()
         repository = ItemRepository(itemDao)
         allItems = repository.allItem
     }
