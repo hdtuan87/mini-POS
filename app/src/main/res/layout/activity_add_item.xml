@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/imvThumb"
+            android:layout_width="wrap_content"
+            android:src="@mipmap/icon_no_image"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_height="wrap_content"/>
+
+    <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/edtName"
+            app:layout_constraintTop_toBottomOf="@id/imvThumb"
+            android:layout_marginTop="32dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:hint="@string/input_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/edtPrice"
+            app:layout_constraintTop_toBottomOf="@id/edtName"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:inputType="numberDecimal"
+            android:hint="@string/input_price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btnAddItem"
+            app:layout_constraintTop_toBottomOf="@id/edtPrice"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="64dp"
+            android:text="@string/them_mat_hang"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+</android.support.constraint.ConstraintLayout>

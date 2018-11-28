@@ -3,4 +3,6 @@
     <string name="tinh_tien">Tinh Tien</string>
     <string name="them_mat_hang">Them Hang</string>
     <string name="danh_sach">Danh sách hàng</string>
+    <string name="input_price">Nhap Gia</string>
+    <string name="input_name">Nhap ten</string>
 </resources>

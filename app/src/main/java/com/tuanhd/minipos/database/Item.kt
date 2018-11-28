@@ -16,4 +16,4 @@ data class Item(
     @ColumnInfo(name = "price")
     val price: Double
 
-)
+): Serializable

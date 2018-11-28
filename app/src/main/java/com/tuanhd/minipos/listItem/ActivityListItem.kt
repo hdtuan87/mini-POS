@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import com.tuanhd.minipos.ActivityAddItem
 import com.tuanhd.minipos.R
 import com.tuanhd.minipos.database.Item
 import kotlinx.android.synthetic.main.activity_list_item.*
@@ -13,7 +14,6 @@ import kotlinx.android.synthetic.main.activity_list_item.*
 class ActivityListItem : AppCompatActivity() {
     companion object {
         const val addItemRequestCode = 1
-        const val extraItem = "extra_item"
     }
 
     private lateinit var itemViewModel: ItemViewModel
@@ -29,6 +29,13 @@ class ActivityListItem : AppCompatActivity() {
         })
 
         listItem.adapter = AdapterItem()
+
+        btnAddItem.setOnClickListener { startActivityAddItem() }
+    }
+
+    private fun startActivityAddItem() {
+        val intent = Intent(this, ActivityAddItem::class.java)
+        startActivityForResult(intent, addItemRequestCode)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -37,7 +44,7 @@ class ActivityListItem : AppCompatActivity() {
 
         if (requestCode == addItemRequestCode){
             data?.let {
-                val item = it.getSerializableExtra(extraItem) as Item
+                val item = it.getSerializableExtra(ActivityAddItem.extraItem) as Item
                 itemViewModel.insert(item)
             }
         }

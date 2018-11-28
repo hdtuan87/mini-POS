@@ -9,7 +9,7 @@
     <android.support.v7.widget.AppCompatImageView
             android:layout_width="wrap_content"
             android:id="@+id/imvThumb"
-            android:src="@android:drawable/btn_star"
+            android:src="@mipmap/icon_no_image"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="16dp"
