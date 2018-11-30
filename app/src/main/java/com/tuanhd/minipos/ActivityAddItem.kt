@@ -14,6 +14,8 @@ class ActivityAddItem : AppCompatActivity() {
         const val EXTRA_ITEM = "extra_item"
     }
 
+    private val getCodeRequestCode = 1
+
     private var thumb = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,13 +23,19 @@ class ActivityAddItem : AppCompatActivity() {
         setContentView(R.layout.activity_add_item)
 
         btnAddItem.setOnClickListener { makeItem() }
+
+        btnScanCode.setOnClickListener { scanCode() }
+    }
+
+    private fun scanCode() {
+
     }
 
     private fun makeItem() {
         val code = UUID.randomUUID().toString()
         val name = edtName.text.toString().trim()
         val price = edtPrice.text.toString().toDouble()
-        val item = Item(code, name, thumb, price)
+        val item = Item(0, code, name, thumb, price)
 
         val intent = Intent()
         intent.putExtra(EXTRA_ITEM, item)

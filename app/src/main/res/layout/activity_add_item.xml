@@ -2,7 +2,8 @@
 <android.support.constraint.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent" android:layout_height="match_parent">
+        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <android.support.v7.widget.AppCompatImageButton
             android:id="@+id/imvThumb"
@@ -13,10 +14,40 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_height="wrap_content"/>
 
+    <RelativeLayout
+            android:id="@+id/groupScanCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            app:layout_constraintTop_toBottomOf="@id/imvThumb">
+
+        <android.support.v7.widget.AppCompatImageButton
+                android:id="@+id/btnScanCode"
+                android:src="@drawable/ic_scan"
+                android:layout_marginEnd="16dp"
+                android:layout_alignParentEnd="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/txvCode"
+                style="@style/Base.TextAppearance.AppCompat.Large"
+                android:layout_alignBottom="@id/btnScanCode"
+                android:layout_alignTop="@id/btnScanCode"
+                android:layout_toStartOf="@id/btnScanCode"
+                android:layout_marginStart="16dp"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="980q3791234082"/>
+
+
+    </RelativeLayout>
+
     <android.support.v7.widget.AppCompatEditText
             android:id="@+id/edtName"
-            app:layout_constraintTop_toBottomOf="@id/imvThumb"
-            android:layout_marginTop="32dp"
+            app:layout_constraintTop_toBottomOf="@id/groupScanCode"
+            android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="16dp"

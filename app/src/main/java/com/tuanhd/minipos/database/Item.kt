@@ -7,7 +7,11 @@ import java.io.Serializable
 
 @Entity(tableName = "items")
 data class Item(
-    @PrimaryKey @ColumnInfo(name = "code")
+
+    @PrimaryKey @ColumnInfo(name = "id")
+    val id: Int,
+
+    @ColumnInfo(name = "code")
     val code: String,
 
     @ColumnInfo(name = "name")
