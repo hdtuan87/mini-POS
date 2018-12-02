@@ -1,19 +1,16 @@
 package com.tuanhd.minipos.listItem
 
-import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import com.tuanhd.minipos.ActivityAddItem
+import com.tuanhd.minipos.addItem.ActivityAddItem
 import com.tuanhd.minipos.R
-import com.tuanhd.minipos.database.Item
 import kotlinx.android.synthetic.main.activity_list_item.*
 
 class ActivityListItem : AppCompatActivity() {
-    private val addItemRequestCode = 1
 
     private lateinit var itemViewModel: ItemViewModel
 
@@ -35,18 +32,7 @@ class ActivityListItem : AppCompatActivity() {
 
     private fun startActivityAddItem() {
         val intent = Intent(this, ActivityAddItem::class.java)
-        startActivityForResult(intent, addItemRequestCode)
+        startActivity(intent)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_CANCELED) return
-
-        if (requestCode == addItemRequestCode) {
-            data?.let {
-                val item = it.getSerializableExtra(ActivityAddItem.EXTRA_ITEM) as Item
-                itemViewModel.insert(item)
-            }
-        }
-    }
 }

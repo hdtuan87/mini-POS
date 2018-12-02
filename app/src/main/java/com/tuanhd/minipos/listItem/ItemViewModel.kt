@@ -3,13 +3,13 @@ package com.tuanhd.minipos.listItem
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
-import android.arch.persistence.room.RoomDatabase
 import com.tuanhd.minipos.database.Item
-import com.tuanhd.minipos.database.ItemRepository
 import com.tuanhd.minipos.database.POSDatabase
-import kotlinx.coroutines.experimental.*
-import kotlinx.coroutines.experimental.android.Main
-import kotlin.coroutines.experimental.CoroutineContext
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
 class ItemViewModel(application: Application) : AndroidViewModel(application) {
     private var parentJob = Job()
