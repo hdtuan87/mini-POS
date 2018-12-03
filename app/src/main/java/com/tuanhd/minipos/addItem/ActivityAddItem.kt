@@ -5,18 +5,13 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.Snackbar
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.android.gms.vision.barcode.Barcode
 import com.tuanhd.minipos.R
 import com.tuanhd.minipos.database.Item
-import com.tuanhd.minipos.listItem.ItemViewModel
 import com.tuanhd.minipos.scanCode.BarcodeCaptureActivity
-import io.reactivex.FlowableSubscriber
-import io.reactivex.SingleObserver
-import io.reactivex.internal.operators.flowable.FlowableObserveOn
-import io.reactivex.internal.operators.flowable.FlowableSubscribeOn
 import kotlinx.android.synthetic.main.activity_add_item.*
 
 class ActivityAddItem : AppCompatActivity() {
@@ -37,6 +32,11 @@ class ActivityAddItem : AppCompatActivity() {
         setContentView(R.layout.activity_add_item)
 
         addItemViewModel = ViewModelProviders.of(this).get(AddItemViewModel::class.java)
+        addItemViewModel.item.observe(this, Observer { data ->
+            data?.let {
+                showCodeExist(it)
+            }
+        })
 
         btnAddItem.setOnClickListener { makeItem() }
 
@@ -48,6 +48,12 @@ class ActivityAddItem : AppCompatActivity() {
         intent.putExtra(BarcodeCaptureActivity.AutoFocus, true)
         intent.putExtra(BarcodeCaptureActivity.UseFlash, false)
         startActivityForResult(intent, getCodeRequestCode)
+    }
+
+    private fun loadDataToUI(item: Item){
+        txvCode.text = item.code
+        edtName.setText(item.name)
+        edtPrice.setText(item.price.toString())
     }
 
     private fun makeItem() {
@@ -71,13 +77,21 @@ class ActivityAddItem : AppCompatActivity() {
         data?.let {
             val barcode = it.getParcelableExtra<Barcode>(BarcodeCaptureActivity.BarcodeObject)
             txvCode.text = barcode.displayValue
+            addItemViewModel.codeIsExist(barcode.displayValue)
         }
 
 
     }
 
 
-    private fun showCodeExist() {
-        Snackbar.make(container, "Code da ton tai", Snackbar.LENGTH_SHORT).show()
+    private fun showCodeExist(item: Item) {
+        val dialog = AlertDialog.Builder(this)
+        dialog.setMessage("Code da ton tai. co muon sua item khong?")
+        dialog.setNegativeButton(R.string.edit) { _, _ ->
+            loadDataToUI(item)
+        }
+
+        dialog.setPositiveButton(R.string.cancel, null)
+        dialog.show()
     }
 }

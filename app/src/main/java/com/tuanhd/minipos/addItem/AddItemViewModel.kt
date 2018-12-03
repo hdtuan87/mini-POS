@@ -3,13 +3,11 @@ package com.tuanhd.minipos.addItem
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.Observer
+import android.arch.lifecycle.MutableLiveData
 import com.tuanhd.minipos.database.Item
 import com.tuanhd.minipos.database.POSDatabase
-import io.reactivex.Flowable
-import io.reactivex.FlowableSubscriber
-import io.reactivex.SingleObserver
-import io.reactivex.disposables.Disposable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -25,6 +23,8 @@ class AddItemViewModel(application: Application) : AndroidViewModel(application)
 
     private val repository: AddItemRepository
 
+    var item = MutableLiveData<Item>()
+
     init {
         val itemDao = POSDatabase.getDatabase(application).itemDao()
         repository = AddItemRepository(itemDao)
@@ -34,24 +34,20 @@ class AddItemViewModel(application: Application) : AndroidViewModel(application)
         repository.insert(item)
     }
 
+    fun codeIsExist(code: String){
+        repository.getItem(code)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe{it ->
+            it?.let {
+                item.value = it
+            }
+        }
+    }
+
 
     override fun onCleared() {
         super.onCleared()
         parentJob.cancel()
-    }
-
-    inner class A : SingleObserver<Item>{
-        override fun onSubscribe(d: Disposable) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        }
-
-        override fun onError(e: Throwable) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        }
-
-        override fun onSuccess(t: Item) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        }
-
     }
 }
