@@ -12,11 +12,6 @@ import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
 class ItemViewModel(application: Application) : AndroidViewModel(application) {
-    private var parentJob = Job()
-    private val coroutineContext: CoroutineContext
-        get() = parentJob + Dispatchers.Main
-
-    private val scope = CoroutineScope(coroutineContext)
 
     private val repository: ItemRepository
 
@@ -28,12 +23,4 @@ class ItemViewModel(application: Application) : AndroidViewModel(application) {
         allItems = repository.allItem
     }
 
-    fun insert(item: Item) = scope.launch(Dispatchers.IO) {
-        repository.insert(item)
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        parentJob.cancel()
-    }
 }

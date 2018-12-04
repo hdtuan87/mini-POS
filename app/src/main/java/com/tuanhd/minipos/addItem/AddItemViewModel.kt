@@ -14,7 +14,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
-class AddItemViewModel(application: Application) : AndroidViewModel(application){
+class AddItemViewModel(application: Application) : AndroidViewModel(application) {
     private var parentJob = Job()
     private val coroutineContext: CoroutineContext
         get() = parentJob + Dispatchers.Main
@@ -34,17 +34,16 @@ class AddItemViewModel(application: Application) : AndroidViewModel(application)
         repository.insert(item)
     }
 
-    fun codeIsExist(code: String){
+    fun codeIsExist(code: String) {
         repository.getItem(code)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe{it ->
-            it?.let {
-                item.value = it
+            .subscribe { it ->
+                it?.let {
+                    item.value = it
+                }
             }
-        }
     }
-
 
     override fun onCleared() {
         super.onCleared()
