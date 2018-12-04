@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.tuanhd.minipos.addItem.ActivityAddItem
 import com.tuanhd.minipos.listItem.ActivityListItem
+import com.tuanhd.minipos.pay.ActivityPay
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -19,6 +20,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnListItem.setOnClickListener { showActivityListItem() }
+
+        btnTinhTien.setOnClickListener { showActivityPay() }
+    }
+
+    private fun showActivityPay() {
+        startActivity(Intent(this, ActivityPay::class.java))
     }
 
     private fun showActivityListItem() {

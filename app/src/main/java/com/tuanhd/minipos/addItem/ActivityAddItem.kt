@@ -41,6 +41,8 @@ class ActivityAddItem : AppCompatActivity() {
         btnAddItem.setOnClickListener { makeItem() }
 
         btnScanCode.setOnClickListener { scanCode() }
+
+        scanCode()
     }
 
     private fun scanCode() {
