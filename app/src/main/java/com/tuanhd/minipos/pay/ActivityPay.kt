@@ -37,6 +37,7 @@ class ActivityPay: AppCompatActivity(){
             data?.let {
                 items.add(it)
                 adapter.notifyDataSetChanged()
+                calTotalAmount(items)
             }
         })
 
@@ -51,6 +52,15 @@ class ActivityPay: AppCompatActivity(){
         btnScanCode.setOnClickListener{showActivityScanBarcode()}
 
         showActivityScanBarcode()
+    }
+
+    private fun calTotalAmount(items: ArrayList<Item>) {
+        var totalAmount = 0.0
+        for (item in items){
+            totalAmount += item.price
+        }
+
+        txvTotalAmount.text = totalAmount.toString()
     }
 
     private fun showNotFoudItem() {

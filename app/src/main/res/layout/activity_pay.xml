@@ -32,9 +32,11 @@
 
     <TextView
             android:id="@+id/txvTotalAmount"
+            style="@style/Base.TextAppearance.AppCompat.Headline"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@id/groupButton"
             android:layout_marginEnd="16dp"
+            android:textStyle="bold|italic"
             tools:text="105.000d"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
