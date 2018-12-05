@@ -2,7 +2,6 @@ package com.tuanhd.minipos.addItem
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
-import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import com.tuanhd.minipos.database.Item
 import com.tuanhd.minipos.database.POSDatabase
@@ -38,11 +37,11 @@ class AddItemViewModel(application: Application) : AndroidViewModel(application)
         repository.getItem(code)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { it ->
-                it?.let {
+            .subscribe { data ->
+                data?.let {
                     item.value = it
                 }
-            }
+            }.dispose()
     }
 
     override fun onCleared() {

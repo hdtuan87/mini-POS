@@ -10,10 +10,16 @@ import com.tuanhd.minipos.database.Item
 class AdapterItem internal constructor(context: Context): RecyclerView.Adapter<ItemViewHolder>() {
 
     private val inflater = LayoutInflater.from(context)
-    private var items = emptyList<Item>()
+    var items = ArrayList<Item>()
 
     internal fun addAll(data: List<Item>) {
-        this.items = data
+        items.clear()
+        items.addAll(data)
+        notifyDataSetChanged()
+    }
+
+    internal fun add(item: Item){
+        items.add(item)
         notifyDataSetChanged()
     }
 

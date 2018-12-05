@@ -15,11 +15,10 @@ import com.tuanhd.minipos.listItem.AdapterItem
 import com.tuanhd.minipos.scanCode.BarcodeCaptureActivity
 import kotlinx.android.synthetic.main.activity_pay.*
 
-class ActivityPay: AppCompatActivity(){
+class ActivityPay : AppCompatActivity() {
     private val getCodeRequestCode = 1
 
     private lateinit var payViewModel: PayViewModel
-    private var items = ArrayList<Item>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,38 +28,32 @@ class ActivityPay: AppCompatActivity(){
 
         listItem.adapter = adapter
         listItem.layoutManager = LinearLayoutManager(this)
-        adapter.addAll(items)
 
 
         payViewModel = ViewModelProviders.of(this).get(PayViewModel::class.java)
         payViewModel.item.observe(this, Observer { data ->
             data?.let {
-                items.add(it)
-                adapter.notifyDataSetChanged()
-                calTotalAmount(items)
+                adapter.add(it)
+                calTotalAmount(adapter.items)
             }
         })
 
-        payViewModel.isItemExist.observe(this, Observer {it ->
-            it?.let {
-                if (!it){
+        payViewModel.isItemExist.observe(this, Observer { data ->
+            data?.let {
+                if (!it) {
                     showNotFoudItem()
                 }
             }
         })
 
-        btnScanCode.setOnClickListener{showActivityScanBarcode()}
+        btnScanCode.setOnClickListener { showActivityScanBarcode() }
+
 
         showActivityScanBarcode()
     }
 
     private fun calTotalAmount(items: ArrayList<Item>) {
-        var totalAmount = 0.0
-        for (item in items){
-            totalAmount += item.price
-        }
-
-        txvTotalAmount.text = totalAmount.toString()
+        txvTotalAmount.text = payViewModel.calTotalAmount(items).toString()
     }
 
     private fun showNotFoudItem() {

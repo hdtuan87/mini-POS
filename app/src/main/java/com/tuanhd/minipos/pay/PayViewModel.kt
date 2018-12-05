@@ -12,8 +12,8 @@ class PayViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository: PayRepository
 
-    var item = MutableLiveData<Item>()
     var isItemExist = MutableLiveData<Boolean>()
+    var item = MutableLiveData<Item>()
 
     init {
         val itemDao = POSDatabase.getDatabase(application).itemDao()
@@ -24,11 +24,24 @@ class PayViewModel(application: Application) : AndroidViewModel(application) {
         repository.getItem(code)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { it ->
-                it?.let {
+            .subscribe { data ->
+                data?.let {
                     item.value = it
+                    isItemExist.value = true
+                    return@let
                 }
-            }
+
+                isItemExist.value = false
+            }.dispose()
+    }
+
+    fun calTotalAmount(data: ArrayList<Item>): Double{
+        var totalAmount = 0.0
+        for (item in data){
+            totalAmount += item.price
+        }
+
+        return totalAmount
     }
 
 }
