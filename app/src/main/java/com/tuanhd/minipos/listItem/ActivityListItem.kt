@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import com.tuanhd.minipos.addItem.ActivityAddItem
 import com.tuanhd.minipos.R
+import com.tuanhd.minipos.database.Item
 import kotlinx.android.synthetic.main.activity_list_item.*
 
 class ActivityListItem : AppCompatActivity() {
@@ -24,10 +25,18 @@ class ActivityListItem : AppCompatActivity() {
 
         itemViewModel = ViewModelProviders.of(this).get(ItemViewModel::class.java)
         itemViewModel.allItems.observe(this, Observer { data ->
-            data?.let { adapter.addAll(it) }
+            data?.let {
+                updateAdapter(adapter, it)
+            }
         })
 
         btnAddItem.setOnClickListener { startActivityAddItem() }
+    }
+
+    private fun updateAdapter(adapter: AdapterItem, it: List<Item>) {
+        adapter.clear()
+        adapter.addAll(it)
+        adapter.notifyDataSetChanged()
     }
 
     private fun startActivityAddItem() {

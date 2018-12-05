@@ -34,6 +34,7 @@ class ActivityPay : AppCompatActivity() {
         payViewModel.item.observe(this, Observer { data ->
             data?.let {
                 adapter.add(it)
+                adapter.notifyDataSetChanged()
                 calTotalAmount(adapter.items)
             }
         })

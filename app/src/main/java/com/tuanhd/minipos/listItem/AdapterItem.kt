@@ -12,15 +12,16 @@ class AdapterItem internal constructor(context: Context): RecyclerView.Adapter<I
     private val inflater = LayoutInflater.from(context)
     var items = ArrayList<Item>()
 
-    internal fun addAll(data: List<Item>) {
+    internal fun clear(){
         items.clear()
+    }
+
+    internal fun addAll(data: List<Item>) {
         items.addAll(data)
-        notifyDataSetChanged()
     }
 
     internal fun add(item: Item){
         items.add(item)
-        notifyDataSetChanged()
     }
 
     override fun getItemCount() = items.size
