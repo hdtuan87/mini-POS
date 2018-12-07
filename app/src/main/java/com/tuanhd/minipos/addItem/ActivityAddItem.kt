@@ -9,10 +9,14 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.android.gms.vision.barcode.Barcode
+import com.jakewharton.rxbinding2.view.RxView
+import com.jakewharton.rxbinding2.widget.RxTextView
 import com.tuanhd.minipos.R
 import com.tuanhd.minipos.database.Item
 import com.tuanhd.minipos.scanCode.BarcodeCaptureActivity
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_add_item.*
+import java.util.concurrent.TimeUnit
 
 class ActivityAddItem : AppCompatActivity() {
 
@@ -25,7 +29,12 @@ class ActivityAddItem : AppCompatActivity() {
 
     private lateinit var addItemViewModel: AddItemViewModel
 
-    private var thumb = ""
+    private var mItem = Item("", "", "", 0.0)
+
+    private lateinit var disposableBtnAdd: Disposable
+    private lateinit var disposableBtnScan: Disposable
+    private lateinit var disposableEdtName: Disposable
+    private lateinit var disposableEdtPrice: Disposable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,9 +47,27 @@ class ActivityAddItem : AppCompatActivity() {
             }
         })
 
-        btnAddItem.setOnClickListener { makeItem() }
+        disposableBtnAdd = RxView.clicks(btnAddItem).subscribe {
+            makeItem()
+        }
 
-        btnScanCode.setOnClickListener { scanCode() }
+        disposableBtnScan = RxView.clicks(btnScanCode).subscribe {
+            scanCode()
+        }
+
+        disposableEdtName = RxTextView.textChanges(edtName)
+            .debounce(350, TimeUnit.MILLISECONDS)
+            .subscribe { name ->
+                mItem.name = name.toString()
+            }
+
+        disposableEdtPrice = RxTextView.textChanges(edtPrice)
+            .debounce(350, TimeUnit.MILLISECONDS)
+            .subscribe { price ->
+                if (price.isEmpty()) return@subscribe
+
+                mItem.price = price.toString().toDouble()
+            }
 
         scanCode()
     }
@@ -52,22 +79,18 @@ class ActivityAddItem : AppCompatActivity() {
         startActivityForResult(intent, getCodeRequestCode)
     }
 
-    private fun loadDataToUI(item: Item){
+    private fun loadDataToUI(item: Item) {
         txvCode.text = item.code
         edtName.setText(item.name)
         edtPrice.setText(item.price.toString())
     }
 
     private fun makeItem() {
-        val code = txvCode.text.toString()
-        val name = edtName.text.toString().trim()
-        val price = edtPrice.text.toString().toDouble()
-        val item = Item(code, name, thumb, price)
 
-        addItemViewModel.insert(item)
+        addItemViewModel.insert(mItem)
 
         val intent = Intent()
-        intent.putExtra(EXTRA_ITEM, item)
+        intent.putExtra(EXTRA_ITEM, mItem)
         setResult(Activity.RESULT_OK, intent)
         finish()
     }
@@ -90,10 +113,31 @@ class ActivityAddItem : AppCompatActivity() {
         val dialog = AlertDialog.Builder(this)
         dialog.setMessage("Code da ton tai. co muon sua item khong?")
         dialog.setNegativeButton(R.string.edit) { _, _ ->
+            mItem = item
             loadDataToUI(item)
         }
 
         dialog.setPositiveButton(R.string.cancel, null)
         dialog.show()
+    }
+
+    override fun onDestroy() {
+        if (!disposableBtnAdd.isDisposed) {
+            disposableBtnAdd.dispose()
+        }
+
+        if (!disposableBtnScan.isDisposed) {
+            disposableBtnScan.dispose()
+        }
+
+        if (!disposableEdtName.isDisposed) {
+            disposableEdtName.dispose()
+        }
+
+        if (!disposableEdtPrice.isDisposed) {
+            disposableEdtPrice.dispose()
+        }
+
+        super.onDestroy()
     }
 }

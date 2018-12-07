@@ -9,15 +9,15 @@ import java.io.Serializable
 data class Item(
 
     @PrimaryKey @ColumnInfo(name = "code")
-    val code: String,
+    var code: String,
 
     @ColumnInfo(name = "name")
-    val name: String,
+    var name: String,
 
     @ColumnInfo(name = "thumb")
-    val thumb: String,
+    var thumb: String,
 
     @ColumnInfo(name = "price")
-    val price: Double
+    var price: Double
 
 ): Serializable
