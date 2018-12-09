@@ -7,6 +7,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.View
 import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.android.gms.vision.barcode.Barcode
@@ -53,6 +54,8 @@ class ActivityAddItem : AppCompatActivity() {
             finish()
         }
 
+        btnAddItem.isEnabled = false
+
         val codeIsValid = RxTextView.textChanges(txvCode)
             .debounce(350, TimeUnit.MILLISECONDS)
             .map { code ->
@@ -66,10 +69,10 @@ class ActivityAddItem : AppCompatActivity() {
             }
 
         disposableEnableButtonSave = Observables.combineLatest(codeIsValid, nameIsValid) { b1, b2 -> b1 && b2 }
-            .debounce(500, TimeUnit.MILLISECONDS)
             .subscribe {
-                if (it != btnAddItem.isEnabled)
-                    btnAddItem.isEnabled = it
+                if (btnAddItem.isEnabled != it){
+//                    btnAddItem.isEnabled = it
+                }
             }
 
 
