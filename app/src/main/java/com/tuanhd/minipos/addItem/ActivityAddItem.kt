@@ -7,7 +7,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.View
 import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.android.gms.vision.barcode.Barcode
@@ -70,9 +69,12 @@ class ActivityAddItem : AppCompatActivity() {
 
         disposableEnableButtonSave = Observables.combineLatest(codeIsValid, nameIsValid) { b1, b2 -> b1 && b2 }
             .subscribe {
-                if (btnAddItem.isEnabled != it){
-//                    btnAddItem.isEnabled = it
+                runOnUiThread {
+                    if (btnAddItem.isEnabled != it) {
+                        btnAddItem.isEnabled = it
+                    }
                 }
+
             }
 
 
