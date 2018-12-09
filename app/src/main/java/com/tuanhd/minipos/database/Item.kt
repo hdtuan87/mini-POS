@@ -1,5 +1,6 @@
 package com.tuanhd.minipos.database
 
+import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey

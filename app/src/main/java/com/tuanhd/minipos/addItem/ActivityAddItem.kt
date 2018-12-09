@@ -7,20 +7,19 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.view.View
 import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.android.gms.vision.barcode.Barcode
-import com.jakewharton.rxbinding2.view.RxView
 import com.jakewharton.rxbinding2.widget.RxTextView
 import com.tuanhd.minipos.R
 import com.tuanhd.minipos.database.Item
 import com.tuanhd.minipos.scanCode.BarcodeCaptureActivity
 import io.reactivex.disposables.Disposable
+import io.reactivex.rxkotlin.Observables
 import kotlinx.android.synthetic.main.activity_add_item.*
 import java.util.concurrent.TimeUnit
 
 class ActivityAddItem : AppCompatActivity() {
-
-
     companion object {
         const val EXTRA_ITEM = "extra_item"
     }
@@ -31,10 +30,10 @@ class ActivityAddItem : AppCompatActivity() {
 
     private var mItem = Item("", "", "", 0.0)
 
-    private lateinit var disposableBtnAdd: Disposable
-    private lateinit var disposableBtnScan: Disposable
     private lateinit var disposableEdtName: Disposable
+    private lateinit var disposableTextViewCode: Disposable
     private lateinit var disposableEdtPrice: Disposable
+    private lateinit var disposableEnableButtonSave: Disposable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,13 +46,32 @@ class ActivityAddItem : AppCompatActivity() {
             }
         })
 
-        disposableBtnAdd = RxView.clicks(btnAddItem).subscribe {
-            makeItem()
+        btnAddItem.setOnClickListener { save() }
+        btnScanCode.setOnClickListener { scanCode() }
+        btnDeleteItem.setOnClickListener {
+            addItemViewModel.delete(mItem)
+            finish()
         }
 
-        disposableBtnScan = RxView.clicks(btnScanCode).subscribe {
-            scanCode()
-        }
+        val codeIsValid = RxTextView.textChanges(txvCode)
+            .debounce(350, TimeUnit.MILLISECONDS)
+            .map { code ->
+                code.isNotEmpty()
+            }
+
+        val nameIsValid = RxTextView.textChanges(edtName)
+            .debounce(350, TimeUnit.MILLISECONDS)
+            .map { name ->
+                name.isNotEmpty()
+            }
+
+        disposableEnableButtonSave = Observables.combineLatest(codeIsValid, nameIsValid) { b1, b2 -> b1 && b2 }
+            .debounce(500, TimeUnit.MILLISECONDS)
+            .subscribe {
+                if (it != btnAddItem.isEnabled)
+                    btnAddItem.isEnabled = it
+            }
+
 
         disposableEdtName = RxTextView.textChanges(edtName)
             .debounce(350, TimeUnit.MILLISECONDS)
@@ -69,7 +87,19 @@ class ActivityAddItem : AppCompatActivity() {
                 mItem.price = price.toString().toDouble()
             }
 
-        scanCode()
+        disposableTextViewCode = RxTextView.textChanges(txvCode)
+            .subscribe { code ->
+                mItem.code = code.toString()
+            }
+
+        if (intent.hasExtra(EXTRA_ITEM)) {
+            mItem = intent.getSerializableExtra(EXTRA_ITEM) as Item
+            loadDataToUI(mItem)
+            btnDeleteItem.visibility = View.VISIBLE
+        } else {
+            scanCode()
+            btnDeleteItem.visibility = View.GONE
+        }
     }
 
     private fun scanCode() {
@@ -85,7 +115,7 @@ class ActivityAddItem : AppCompatActivity() {
         edtPrice.setText(item.price.toString())
     }
 
-    private fun makeItem() {
+    private fun save() {
 
         addItemViewModel.insert(mItem)
 
@@ -104,10 +134,7 @@ class ActivityAddItem : AppCompatActivity() {
             txvCode.text = barcode.displayValue
             addItemViewModel.codeIsExist(barcode.displayValue)
         }
-
-
     }
-
 
     private fun showCodeExist(item: Item) {
         val dialog = AlertDialog.Builder(this)
@@ -122,13 +149,6 @@ class ActivityAddItem : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        if (!disposableBtnAdd.isDisposed) {
-            disposableBtnAdd.dispose()
-        }
-
-        if (!disposableBtnScan.isDisposed) {
-            disposableBtnScan.dispose()
-        }
 
         if (!disposableEdtName.isDisposed) {
             disposableEdtName.dispose()
@@ -136,6 +156,14 @@ class ActivityAddItem : AppCompatActivity() {
 
         if (!disposableEdtPrice.isDisposed) {
             disposableEdtPrice.dispose()
+        }
+
+        if (!disposableTextViewCode.isDisposed) {
+            disposableTextViewCode.dispose()
+        }
+
+        if (!disposableEnableButtonSave.isDisposed) {
+            disposableEnableButtonSave.dispose()
         }
 
         super.onDestroy()

@@ -6,11 +6,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.tuanhd.minipos.R
 import com.tuanhd.minipos.database.Item
+import io.reactivex.subjects.PublishSubject
 
 class AdapterItem internal constructor(context: Context): RecyclerView.Adapter<ItemViewHolder>() {
 
     private val inflater = LayoutInflater.from(context)
     var items = ArrayList<Item>()
+
+    private lateinit var publishSubject: PublishSubject<Item>
 
     internal fun clear(){
         items.clear()
@@ -24,11 +27,16 @@ class AdapterItem internal constructor(context: Context): RecyclerView.Adapter<I
         items.add(item)
     }
 
+    internal fun setListener(publishSubject: PublishSubject<Item>){
+        this.publishSubject = publishSubject
+    }
+
     override fun getItemCount() = items.size
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, position: Int): ItemViewHolder {
         val view = inflater.inflate(R.layout.layout_item, viewGroup, false)
-        return ItemViewHolder(view)
+
+        return ItemViewHolder(view, publishSubject)
     }
 
 

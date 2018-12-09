@@ -13,6 +13,11 @@ class AddItemRepository(private val itemDao: ItemDao){
     }
 
     @WorkerThread
+    fun delete(item: Item){
+        itemDao.delete(item)
+    }
+
+    @WorkerThread
     fun getItem(code: String): Maybe<Item>{
         return itemDao.getItem(code)
     }

@@ -33,6 +33,10 @@ class AddItemViewModel(application: Application) : AndroidViewModel(application)
         repository.insert(item)
     }
 
+    fun delete(item: Item) = scope.launch(Dispatchers.IO) {
+        repository.delete(item)
+    }
+
     fun codeIsExist(code: String) {
         repository.getItem(code)
             .subscribeOn(Schedulers.io())

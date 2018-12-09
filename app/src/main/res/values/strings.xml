@@ -22,4 +22,5 @@
     <string name="barcode_error">"Error reading barcode: %1$s"</string>
     <string name="cancel">Cancel</string>
     <string name="pay">Pay</string>
+    <string name="delete">Delete</string>
 </resources>
