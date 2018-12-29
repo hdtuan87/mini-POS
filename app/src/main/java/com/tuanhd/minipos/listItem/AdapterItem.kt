@@ -13,7 +13,7 @@ class AdapterItem internal constructor(context: Context): RecyclerView.Adapter<I
     private val inflater = LayoutInflater.from(context)
     var items = ArrayList<Item>()
 
-    private lateinit var publishSubject: PublishSubject<Item>
+    private var publishSubject = PublishSubject.create<Item>()
 
     internal fun clear(){
         items.clear()

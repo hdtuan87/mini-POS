@@ -1,11 +1,9 @@
-package com.tuanhd.minipos.addItem
+package com.tuanhd.minipos.database
 
 import android.support.annotation.WorkerThread
-import com.tuanhd.minipos.database.Item
-import com.tuanhd.minipos.database.ItemDao
 import io.reactivex.Maybe
 
-class AddItemRepository(private val itemDao: ItemDao){
+class ItemRepository(private val itemDao: ItemDao){
 
     @WorkerThread
     fun insert(item: Item){

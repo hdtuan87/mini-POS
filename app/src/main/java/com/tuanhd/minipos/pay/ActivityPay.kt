@@ -36,19 +36,13 @@ class ActivityPay : AppCompatActivity() {
                 adapter.add(it)
                 adapter.notifyDataSetChanged()
                 calTotalAmount(adapter.items)
+                return@Observer
             }
-        })
 
-        payViewModel.isItemExist.observe(this, Observer { data ->
-            data?.let {
-                if (!it) {
-                    showNotFoudItem()
-                }
-            }
+            showNotFoudItem()
         })
 
         btnScanCode.setOnClickListener { showActivityScanBarcode() }
-
 
         showActivityScanBarcode()
     }

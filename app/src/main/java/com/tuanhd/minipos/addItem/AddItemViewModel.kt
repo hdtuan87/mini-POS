@@ -3,10 +3,13 @@ package com.tuanhd.minipos.addItem
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
+import com.tuanhd.minipos.database.ItemRepository
 import com.tuanhd.minipos.database.Item
 import com.tuanhd.minipos.database.POSDatabase
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.PublishSubject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -20,13 +23,30 @@ class AddItemViewModel(application: Application) : AndroidViewModel(application)
 
     private val scope = CoroutineScope(coroutineContext)
 
-    private val repository: AddItemRepository
+    private val repository: ItemRepository
 
     var item = MutableLiveData<Item>()
 
+    private val findItemObserver: PublishSubject<String>
+    private val disposableFindItem: Disposable
+
     init {
         val itemDao = POSDatabase.getDatabase(application).itemDao()
-        repository = AddItemRepository(itemDao)
+        repository = ItemRepository(itemDao)
+
+        findItemObserver = PublishSubject.create()
+        disposableFindItem = findItemObserver
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map { repository.getItem(it)}
+            .subscribe {
+                it.subscribe { data ->
+                    data?.let {
+                        item.value = it
+                    }
+                }
+            }
+
     }
 
     fun insert(item: Item) = scope.launch(Dispatchers.IO) {
@@ -38,18 +58,14 @@ class AddItemViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun codeIsExist(code: String) {
-        repository.getItem(code)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { data ->
-                data?.let {
-                    item.value = it
-                }
-            }.dispose()
+        findItemObserver.onNext(code)
     }
 
     override fun onCleared() {
         super.onCleared()
         parentJob.cancel()
+        if (!disposableFindItem.isDisposed){
+            disposableFindItem.dispose()
+        }
     }
 }

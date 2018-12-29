@@ -46,6 +46,7 @@ class ActivityAddItem : AppCompatActivity() {
             }
         })
 
+
         btnAddItem.setOnClickListener { save() }
         btnScanCode.setOnClickListener { scanCode() }
         btnDeleteItem.setOnClickListener {
@@ -67,6 +68,7 @@ class ActivityAddItem : AppCompatActivity() {
                 name.isNotEmpty()
             }
 
+
         disposableEnableButtonSave = Observables.combineLatest(codeIsValid, nameIsValid) { b1, b2 -> b1 && b2 }
             .subscribe {
                 runOnUiThread {
@@ -74,7 +76,6 @@ class ActivityAddItem : AppCompatActivity() {
                         btnAddItem.isEnabled = it
                     }
                 }
-
             }
 
 
